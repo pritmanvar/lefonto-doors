@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Category, ProductMaterial, Style, Color, Size, Feature,
-    Product, ProductSize, ProductImage
+    Product, ProductSizePrice, ProductImage
 )
 
 @admin.register(Category)
@@ -38,8 +38,8 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
 
-class ProductSizeInline(admin.TabularInline):
-    model = ProductSize
+class ProductSizePriceInline(admin.TabularInline):
+    model = ProductSizePrice
     extra = 1
 
 @admin.register(Product)
@@ -49,7 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['product_name', 'details', 'short_description']
     readonly_fields = ['created_at', 'updated_at']
     filter_horizontal = ['color', 'features', 'recommanded_products']
-    inlines = [ProductSizeInline, ProductImageInline]
+    inlines = [ProductSizePriceInline, ProductImageInline]
     
     fieldsets = [
         ('Basic Information', {
@@ -73,8 +73,8 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     ]
 
-@admin.register(ProductSize)
-class ProductSizeAdmin(admin.ModelAdmin):
+@admin.register(ProductSizePrice)
+class ProductSizePriceAdmin(admin.ModelAdmin):
     list_display = ['product', 'size', 'price', 'discount']
     list_filter = ['product', 'size']
     search_fields = ['product__product_name']

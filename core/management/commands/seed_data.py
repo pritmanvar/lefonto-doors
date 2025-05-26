@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from product.models import (
     Category, ProductMaterial, Style, Color, Size, Feature,
-    Product, ProductSize, ProductImage
+    Product, ProductSizePrice, ProductImage
 )
 from about.models import WhyUsAbout, Expertise, About
 from catalog.models import WhyUsCatalog, Catalog
@@ -115,7 +115,7 @@ class Command(BaseCommand):
             
             # Add product sizes with prices
             for size in random.sample(sizes, random.randint(2, 4)):
-                ProductSize.objects.create(
+                ProductSizePrice.objects.create(
                     product=product,
                     size=size,
                     price=random.uniform(200, 1000),
