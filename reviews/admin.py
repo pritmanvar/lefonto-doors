@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import CustomerReview
 
 @admin.register(CustomerReview)
 class CustomerReviewAdmin(admin.ModelAdmin):
