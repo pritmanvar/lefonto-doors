@@ -6,7 +6,7 @@ class CustomerReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'rating', 'created_at']
     list_filter = ['rating', 'created_at', 'product']
     search_fields = ['user__email', 'product__product_name', 'review_text']
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ['created_at']
     raw_id_fields = ['user', 'product']
     
     fieldsets = [
@@ -17,7 +17,7 @@ class CustomerReviewAdmin(admin.ModelAdmin):
             'fields': ['review_text']
         }),
         ('Timestamps', {
-            'fields': ['created_at', 'updated_at'],
+            'fields': ['created_at'],
             'classes': ['collapse']
         }),
     ]

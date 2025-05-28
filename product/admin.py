@@ -1,86 +1,107 @@
+from django import forms
 from django.contrib import admin
+from django_jsonform.models.fields import JSONField, ArrayField
+
 from .models import (
-    Category, ProductMaterial, Style, Color, Size, Feature,
-    Product, ProductSizePrice, ProductImage
+    DoorCategory,
+    DoorStyle,
+    DoorDimension,
+    DoorColor,
+    DoorMaterial,
+    Feature,
+    GallarySupporting,
+    Product,
 )
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
-    search_fields = ['name']
+@admin.register(DoorCategory)
+class DoorCategoryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at', 'updated_at', 'updated_by')
+    search_fields = ('title',)
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
-@admin.register(ProductMaterial)
-class ProductMaterialAdmin(admin.ModelAdmin):
-    list_display = ['material_name']
-    search_fields = ['material_name']
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
 
-@admin.register(Style)
-class StyleAdmin(admin.ModelAdmin):
-    list_display = ['style_name']
-    search_fields = ['style_name']
+@admin.register(DoorStyle)
+class DoorStyleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at', 'updated_at', 'updated_by')
+    search_fields = ('name', 'description')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
-@admin.register(Color)
-class ColorAdmin(admin.ModelAdmin):
-    list_display = ['color_name', 'color_code']
-    search_fields = ['color_name', 'color_code']
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
 
-@admin.register(Size)
-class SizeAdmin(admin.ModelAdmin):
-    list_display = ['height', 'width', '__str__']
-    search_fields = ['height', 'width']
+@admin.register(DoorDimension)
+class DoorDimensionAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'thickness', 'height', 'width', 'created_at', 'updated_at', 'updated_by')
+    list_filter = ('thickness_measure', 'height_measure', 'width_measure')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+@admin.register(DoorColor)
+class DoorColorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'color_code', 'created_at', 'updated_at', 'updated_by')
+    search_fields = ('name', 'color_code')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+@admin.register(DoorMaterial)
+class DoorMaterialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at', 'updated_at', 'updated_by')
+    search_fields = ('name',)
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
-    list_display = ['feature_name']
-    search_fields = ['feature_name']
+    list_display = ('feature_name',)
+    search_fields = ('feature_name',)
 
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
-    extra = 1
+@admin.register(GallarySupporting)
+class GallarySupportingAdmin(admin.ModelAdmin):
+    list_display = ('product', 'user', 'created_at', 'updated_at', 'updated_by')
+    list_filter = ('product', 'user')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
-class ProductSizePriceInline(admin.TabularInline):
-    model = ProductSizePrice
-    extra = 1
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+# class ProductForm(forms.ModelForm):
+#     variants = JSONField()
+#     colors = JSONField()
+    
+#     class Meta:
+#         model = Product
+#         fields = '__all__'
+    
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+        
+#         # Set schemas dynamically
+#         self.fields['variants'].schema = Product.get_variant_schema()
+#         self.fields['colors'].schema = Product.get_color_schema()
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['product_name', 'category', 'material', 'style', 'ratings', 'created_at']
-    list_filter = ['category', 'material', 'style', 'created_at']
-    search_fields = ['product_name', 'details', 'short_description']
-    readonly_fields = ['created_at', 'updated_at']
-    filter_horizontal = ['color', 'features', 'recommanded_products']
-    inlines = [ProductSizePriceInline, ProductImageInline]
-    
-    fieldsets = [
-        ('Basic Information', {
-            'fields': ['product_name', 'short_description', 'details', 'main_image']
-        }),
-        ('Classifications', {
-            'fields': ['category', 'material', 'style']
-        }),
-        ('Specifications', {
-            'fields': ['thickness', 'weight', 'color']
-        }),
-        ('Features & Recommendations', {
-            'fields': ['features', 'recommanded_products']
-        }),
-        ('Customer Information', {
-            'fields': ['warranty_details', 'return_policy', 'ratings']
-        }),
-        ('Timestamps', {
-            'fields': ['created_at', 'updated_at'],
-            'classes': ['collapse']
-        }),
-    ]
+    # form = ProductForm
+    list_display = ('product_name', 'category', 'style', 'ratings', 'created_at', 'updated_at', 'updated_by')
+    list_filter = ('category', 'style', 'features')
+    search_fields = ('product_name', 'details', 'short_description')
+    filter_horizontal = ('features', 'recommanded_products')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
-@admin.register(ProductSizePrice)
-class ProductSizePriceAdmin(admin.ModelAdmin):
-    list_display = ['product', 'size', 'price', 'discount']
-    list_filter = ['product', 'size']
-    search_fields = ['product__product_name']
-
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ['product']
-    list_filter = ['product']
-    search_fields = ['product__product_name']
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)

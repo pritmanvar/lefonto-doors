@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from product.models import Image
 
-# Create your views here.
+@login_required
+def file_handler(request):
+    if request.method == 'POST':
+        file = request.FILES['file']
+        obj = Image(image=file)
+        obj.save()
+
+        return JsonResponse({'value': obj.image.url})

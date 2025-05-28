@@ -9,7 +9,6 @@ class CustomerReview(models.Model):
     rating = models.FloatField()
     review_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Review for {self.product.product_name} by {self.user.username}"

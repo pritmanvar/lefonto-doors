@@ -1,22 +1,13 @@
 from django.contrib import admin
-from .models import ContactQueries
+from .models import Inquiry
 
-@admin.register(ContactQueries)
-class ContactQueriesAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'message', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['name', 'email', 'message']
-    readonly_fields = ['created_at']
-    ordering = ['-created_at']  # Show newest queries first
-    
-    fieldsets = [
-        ('Contact Information', {
-            'fields': ['name', 'email']
-        }),
-        ('Query Details', {
-            'fields': ['message']
-        }),
-        ('Timestamp', {
-            'fields': ['created_at']
-        }),
-    ]
+@admin.register(Inquiry)
+class InquiryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'mobile', 'product', 'created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at')
+    search_fields = ('name', 'mobile', 'message', 'country', 'state', 'city')
+    readonly_fields = ('created_at', 'updated_at')
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
