@@ -38,12 +38,11 @@ def get_profile(response: Response, login_details=Depends(get_token)):
     print("MY EMAIL", email)
     return get_profile_details(email, response=response)
 
-loc_router = APIRouter()
-
-@loc_router.get('/location', summary="get location details", response_model=commonResponse)
+@auth_router.get('/location', summary="get location details", response_model=commonResponse)
 def get_location(response: Response):
     return get_location_details(response=response)
 
-@loc_router.post('/location', summary="add location", response_model=commonResponse)
+@auth_router.post('/location', summary="add location", response_model=commonResponse)
 def add_location(response: Response, data: Location, login_details=Depends(get_token)):
-    return add_location_details(response=response, data=data)
+    email = login_details['email']
+    return add_location_details(response=response, data=data, email=email)

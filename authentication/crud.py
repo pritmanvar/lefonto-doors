@@ -68,12 +68,6 @@ def update_profile(email, data, response):
         my_user.name = data.name
         my_user.email = data.email
         my_user.mobile = data.mobile
-        my_user.address_house_no = data.address_house_no
-        my_user.address_landmark = data.address_landmark
-        my_user.address_city = data.address_city
-        my_user.address_pincode = data.address_pincode
-        my_user.address_state = data.address_state
-        my_user.address_country = data.address_country
         
         my_user.save()
         
@@ -98,12 +92,11 @@ def get_profile_details(email, response):
         user_response = {"email": my_user.email,
                          "name": my_user.name,
                          "role": my_user.role,
-                         "address_house_no": my_user.address_house_no,
-                         "address_landmark": my_user.address_landmark,
-                         "address_city": my_user.address_city,
-                         "address_pincode": my_user.address_pincode,
-                         "address_state": my_user.address_state,
-                         "address_country": my_user.address_country,
+                         "landmark": my_user.location.landmark if my_user.location else '',
+                         "city": my_user.location.city if my_user.location else '',
+                         "pincode": my_user.location.pincode if my_user.location else '',
+                         "state": my_user.location.state if my_user.location else '',
+                         "country": my_user.location.country if my_user.location else '',
                          "mobile": my_user.mobile,
                          "profile_image": my_user.profile_image.url if my_user.profile_image else '',
                          }
@@ -134,10 +127,22 @@ def get_location_details(response):
 
 # ****************************************************** Add Location ******************************************************
 
-def add_location_details(response, data):
+def add_location_details(response, data, email):
     try:
-        location = Location.objects.create(country=data.country, state=data.state, city=data.city, pincode=data.pincode, landmark=data.landmark)
-        return CommonResponse(200, "True", 200, "Location Added Successfully.", 'success', Value={'location_id': location.id})
+        user = User.objects.get(email=email)
+        location, created = Location.objects.get_or_create(country=data.country, state=data.state, city=data.city, pincode=data.pincode, landmark=data.landmark)
+
+        user.location = location
+        user.save()
+
+        if created:
+            return CommonResponse(200, "True", 200, "Location Added Successfully.", 'success', Value={'location_id': location.id})
+        return CommonResponse(200, "True", 200, "Location Already Exists.", 'success', Value={'location_id': location.id})
+    
+    except User.DoesNotExist:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return CommonResponse(404, "True", 404, "User not found.", 'error', Value=None)
+    
     except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
         print(error)
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -7,12 +7,6 @@ class UserUpdate(BaseModel):
     name: str
     email: str
     mobile: int
-    address_house_no: str = ""
-    address_landmark: str = ""
-    address_city: str = ""
-    address_pincode: str = ""
-    address_state: str = ""
-    address_country: str = ""
 
     class Config:
         from_attributes = True

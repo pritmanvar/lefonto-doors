@@ -6,20 +6,15 @@ import json
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'name', 'role', 'address_city', 'address_country', 'is_staff', 'is_active')
-    list_filter = ('is_staff', 'is_active', 'is_superuser', 'role', 'address_country', 'address_state', 'address_city')
-    search_fields = ('email', 'name', 'address_country', 'address_state', 'address_city', 'address_landmark')
+    list_display = ('email', 'name', 'role', 'location', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'is_superuser', 'role', 'location')
+    search_fields = ('email', 'name', 'location')
     ordering = ('email',)
     
     fieldsets = (
         ('Authentication', {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('name', 'role')}),
-        ('Address Information', {
-            'fields': (
-                'address_country', 'address_state', 'address_city',
-                'address_house_no', 'address_landmark', 'address_pincode'
-            ),
-        }),
+        ('Address Information', {'fields': ('location',)}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -31,8 +26,7 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'email', 'name', 'role', 'password1', 'password2',
-                'address_country', 'address_state', 'address_city',
-                'address_house_no', 'address_landmark', 'address_pincode',
+                'location',
                 'is_staff', 'is_active'
             )}
         ),
@@ -40,10 +34,10 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('country', 'state', 'city', 'pincode', 'landmark', 'updated_by', 'created_at')
-    list_filter = ('country', 'state', 'city', 'updated_by')
+    list_display = ('country', 'state', 'city', 'pincode', 'landmark', 'created_at')
+    list_filter = ('country', 'state', 'city')
     search_fields = ('country', 'state', 'city', 'pincode', 'landmark')
-    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+    readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
     
     fieldsets = (
@@ -51,11 +45,8 @@ class LocationAdmin(admin.ModelAdmin):
             'fields': ('country', 'state', 'city', 'pincode', 'landmark')
         }),
         ('Metadata', {
-            'fields': ('updated_by', 'created_at', 'updated_at'),
+            'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )
 
-    def save_model(self, request, obj, form, change):
-        obj.updated_by = request.user
-        super().save_model(request, obj, form, change)

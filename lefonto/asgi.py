@@ -21,7 +21,7 @@ from fastapi.middleware.wsgi import WSGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from authentication.routes import auth_router, loc_router
+from authentication.routes import auth_router
 from contactus.routes import contactus_router
 
 from django.core.asgi import get_asgi_application
@@ -42,7 +42,6 @@ def get_application() -> FastAPI:
     app.mount("/staticfile", StaticFiles(directory=static_path), name="static")
 
     app.include_router(auth_router, tags=["Auth"], prefix='/api/auth')
-    app.include_router(loc_router, tags=["Location"], prefix='/api/location')
     app.include_router(contactus_router, tags=["Contactus"], prefix='/api/contactus')
     app.mount("/", WSGIMiddleware(get_wsgi_application()))
 
