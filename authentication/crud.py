@@ -13,7 +13,7 @@ django.setup()
 from django.contrib.auth import authenticate
 from django.db import InterfaceError, Error, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from authentication.models import User
+from authentication.models import User, Location
 from fastapi import status
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
@@ -120,4 +120,25 @@ def get_profile_details(email, response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return UserResponse({}, 500, "True", 500, "Something went wrong, Please try again.", ("{}").format(error))
 
+# ****************************************************** Get Location ******************************************************
 
+def get_location_details(response):
+    try:
+        locations = list(Location.objects.all().values('country', 'state', 'city', 'pincode', 'landmark'))
+        return CommonResponse(200, "True", 200, "Locations Fetched Successfully.", 'success', Value=locations)
+
+    except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
+        print(error)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
+
+# ****************************************************** Add Location ******************************************************
+
+def add_location_details(response, data):
+    try:
+        location = Location.objects.create(country=data.country, state=data.state, city=data.city, pincode=data.pincode, landmark=data.landmark)
+        return CommonResponse(200, "True", 200, "Location Added Successfully.", 'success', Value={'location_id': location.id})
+    except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
+        print(error)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))

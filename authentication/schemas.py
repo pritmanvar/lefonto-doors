@@ -23,3 +23,10 @@ class UserLogin(BaseModel):
 
     class Config:
         from_attributes = True
+
+class Location(BaseModel):
+    country: str
+    state: str
+    city: str
+    pincode: str
+    landmark: str

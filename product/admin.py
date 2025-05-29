@@ -78,25 +78,9 @@ class GallarySupportingAdmin(admin.ModelAdmin):
         obj.updated_by = request.user
         super().save_model(request, obj, form, change)
 
-# class ProductForm(forms.ModelForm):
-#     variants = JSONField()
-#     colors = JSONField()
-    
-#     class Meta:
-#         model = Product
-#         fields = '__all__'
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-        
-#         # Set schemas dynamically
-#         self.fields['variants'].schema = Product.get_variant_schema()
-#         self.fields['colors'].schema = Product.get_color_schema()
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    # form = ProductForm
-    list_display = ('product_name', 'category', 'style', 'ratings', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'product_name', 'category', 'style', 'ratings', 'created_at', 'updated_at', 'updated_by')
     list_filter = ('category', 'style', 'features')
     search_fields = ('product_name', 'details', 'short_description')
     filter_horizontal = ('features', 'recommanded_products')

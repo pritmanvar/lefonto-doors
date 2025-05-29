@@ -373,13 +373,9 @@ def ContactDataValidation(data):
             Error["name Value Error"] = "Length Must Be Less Then 50."
             return Error
 
-        if not validate(data.email).Email():
-            Error = "Incorrect Email Format."
-            return Error
-
-        if not validate(data.phone_number).PhoneNumber():
-            Error["phone_number Value Error"] = "Incorrect Phone Number Format."
-            return Error
+        if not validate(data.mobile).PhoneNumber():
+            Error["mobile Value Error"] = "Incorrect Phone Number Format."
+            return Error        
 
     except AttributeError as e:
         Error = str(e)

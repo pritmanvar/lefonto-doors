@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, File, UploadFile, Response
 
 from utils.utils import get_token, TokenResponse
-from utils.schemas import tokenResponse, userResponse
+from utils.schemas import tokenResponse, userResponse, commonResponse
 from utils.validation import loginDataValidation, UserUpdateDataValidation
 
-from authentication.schemas import UserLogin, UserUpdate
-from authentication.crud import verify_credentials, update_profile, update_profile_img, get_profile_details
+from authentication.schemas import UserLogin, UserUpdate, Location
+from authentication.crud import verify_credentials, update_profile, update_profile_img, get_profile_details, get_location_details, add_location_details
 
 auth_router = APIRouter()
 
@@ -37,3 +37,13 @@ def get_profile(response: Response, login_details=Depends(get_token)):
     email = login_details['email']
     print("MY EMAIL", email)
     return get_profile_details(email, response=response)
+
+loc_router = APIRouter()
+
+@loc_router.get('/location', summary="get location details", response_model=commonResponse)
+def get_location(response: Response):
+    return get_location_details(response=response)
+
+@loc_router.post('/location', summary="add location", response_model=commonResponse)
+def add_location(response: Response, data: Location, login_details=Depends(get_token)):
+    return add_location_details(response=response, data=data)
