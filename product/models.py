@@ -84,7 +84,6 @@ def get_materials():
         materials_objs = DoorMaterial.objects.all()
         for material in materials_objs:
             materials.append(f"{material.name} - {material.id}")
-        print(materials)
         return materials
     except Exception as e:
         print(e)
@@ -96,7 +95,6 @@ def get_colors():
         colors_objs = DoorColor.objects.all()
         for color in colors_objs:
             colors.append(f"{color.name} - {color.id}")
-        print("COLORS", colors)
         return colors
     except Exception as e:
         print(e)
@@ -186,17 +184,6 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def get_materials():
-        materials = []
-        try:
-            materials_objs = DoorMaterial.objects.all()
-            for material in materials_objs:
-                materials.append(f"{material.name} - {material.id}")
-            print(materials)
-            return materials
-        except Exception as e:
-            print(e)
-            return []
     def __str__(self):
         return self.product_name
 

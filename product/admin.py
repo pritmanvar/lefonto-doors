@@ -15,7 +15,7 @@ from .models import (
 
 @admin.register(DoorCategory)
 class DoorCategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'title', 'created_at', 'updated_at', 'updated_by')
     search_fields = ('title',)
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
@@ -25,7 +25,7 @@ class DoorCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(DoorStyle)
 class DoorStyleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'name', 'created_at', 'updated_at', 'updated_by')
     search_fields = ('name', 'description')
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
@@ -35,7 +35,7 @@ class DoorStyleAdmin(admin.ModelAdmin):
 
 @admin.register(DoorDimension)
 class DoorDimensionAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'thickness', 'height', 'width', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', '__str__', 'thickness', 'height', 'width', 'created_at', 'updated_at', 'updated_by')
     list_filter = ('thickness_measure', 'height_measure', 'width_measure')
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
@@ -45,7 +45,7 @@ class DoorDimensionAdmin(admin.ModelAdmin):
 
 @admin.register(DoorColor)
 class DoorColorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color_code', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'name', 'color_code', 'created_at', 'updated_at', 'updated_by')
     search_fields = ('name', 'color_code')
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
@@ -55,7 +55,7 @@ class DoorColorAdmin(admin.ModelAdmin):
 
 @admin.register(DoorMaterial)
 class DoorMaterialAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'name', 'created_at', 'updated_at', 'updated_by')
     search_fields = ('name',)
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
@@ -65,12 +65,12 @@ class DoorMaterialAdmin(admin.ModelAdmin):
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
-    list_display = ('feature_name',)
+    list_display = ('id', 'feature_name',)
     search_fields = ('feature_name',)
 
 @admin.register(GallarySupporting)
 class GallarySupportingAdmin(admin.ModelAdmin):
-    list_display = ('product', 'user', 'created_at', 'updated_at', 'updated_by')
+    list_display = ('id', 'product', 'user', 'created_at', 'updated_at', 'updated_by')
     list_filter = ('product', 'user')
     readonly_fields = ('created_at', 'updated_at', 'updated_by')
 
