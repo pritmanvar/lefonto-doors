@@ -6,7 +6,7 @@ Django==5.2.1
 django-admin-interface==0.30.0
 django-colorfield==0.14.0
 django-jsonform==2.23.2
-Faker==37.3.0
+Faker==19.13.0
 fastapi==0.115.12
 h11==0.16.0
 idna==3.10

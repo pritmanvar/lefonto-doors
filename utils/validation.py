@@ -272,7 +272,7 @@ def UserUpdateDataValidation(email, data):
             except:
                 pass
 
-        if not validate(data.phoneNumber).PhoneNumber():
+        if not validate(data.mobile).PhoneNumber():
             Error["phoneNumber Value Error"] = "Incorrect Phone Number Format."
             return Error
 

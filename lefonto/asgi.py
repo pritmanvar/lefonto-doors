@@ -21,6 +21,8 @@ from fastapi.middleware.wsgi import WSGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
+from authentication.routes import auth_router
+
 from django.core.asgi import get_asgi_application
 
 apps.populate(settings.INSTALLED_APPS)
@@ -38,6 +40,7 @@ def get_application() -> FastAPI:
     static_path = os.path.join(settings.BASE_DIR, "staticfile")  # adjust if needed
     app.mount("/staticfile", StaticFiles(directory=static_path), name="static")
 
+    app.include_router(auth_router, tags=["Auth"], prefix='/api/auth')
 
     app.mount("/", WSGIMiddleware(get_wsgi_application()))
 
