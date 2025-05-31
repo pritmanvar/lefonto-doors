@@ -11,7 +11,8 @@ def get_filters_details(response, filters):
         filters_data = Q()
         materials_list = list(DoorMaterial.objects.filter(id__in=filters.material).values('id', 'name'))
         colors_list = list(DoorColor.objects.filter(id__in=filters.color).values('id', 'name'))
-        
+        dimentions_list = list(DoorDimension.objects.filter(id__in=filters.dimentions).values('id', 'thickness', 'height', 'width', 'thickness_measure', 'height_measure', 'width_measure'))
+        print(dimentions_list)
         print(materials_list)
         print(colors_list)
         if filters.category:
@@ -24,6 +25,9 @@ def get_filters_details(response, filters):
         if filters.color:
             for color in colors_list:
                 filters_data |= Q(colors__contains=[{"color": f"{color['name']} - {color['id']}"}])
+        if filters.dimentions:
+            for dim in dimentions_list:
+                filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         
         products = Product.objects.filter(filters_data)
         products_obj = []

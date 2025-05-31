@@ -26,6 +26,8 @@ from contactus.routes import contactus_router
 from product.routes import product_router
 from catalog.routes import catalog_router
 from home.routes import home_router
+from about.routes import about_router
+from reviews.routes import reviews_router
 
 from django.core.asgi import get_asgi_application
 
@@ -49,6 +51,8 @@ def get_application() -> FastAPI:
     app.include_router(product_router, tags=["Product"], prefix='/api/product')
     app.include_router(catalog_router, tags=["Catalog"], prefix='/api/catalog')
     app.include_router(home_router, tags=["Home"], prefix='/api/home')
+    app.include_router(about_router, tags=["About"], prefix='/api/about')
+    app.include_router(reviews_router, tags=["Reviews"], prefix='/api/reviews')
     app.mount("/", WSGIMiddleware(get_wsgi_application()))
 
     return app

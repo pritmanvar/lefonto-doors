@@ -9,4 +9,5 @@ class ProductFilters(BaseModel):
     style: list[int] = []
     material: list[int] = []
     color: list[int] = []
+    dimentions: list[int] = []
     price: PriceRange = None

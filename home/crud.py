@@ -45,6 +45,9 @@ def get_home_details(response):
         }
         return CommonResponse(200, "True", 200, "Home fetched successfully.", 'success', Value=home_object)
     except Home.DoesNotExist:
+        response.status_code = status.HTTP_404_NOT_FOUND
         return CommonResponse(404, "False", 404, "No home found.", 'error', Value=None)
     except Exception as e:
+        print(e)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return CommonResponse(500, "False", 500, str(e), 'error', Value=None)
