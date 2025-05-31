@@ -6,7 +6,6 @@ class Banner(models.Model):
     description = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to='uploads/banners/', null=True, blank=True)
     product_material = models.ForeignKey(DoorMaterial, on_delete=models.SET_NULL, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
 
 class Home(models.Model):
     title = models.CharField(max_length=100, blank=True)
@@ -16,6 +15,7 @@ class Home(models.Model):
     question = models.CharField(max_length=255, blank=True)
     answer = models.TextField(blank=True)
     features = models.ManyToManyField(Feature, blank=True)
+    banner = models.ManyToManyField(Banner, blank=True)
 
     def __str__(self):
         return self.title if self.title else "Home Page"

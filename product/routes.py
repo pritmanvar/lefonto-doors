@@ -12,6 +12,6 @@ def get_filters(response: Response, filters: ProductFilters):
     print(filters)
     return get_filters_details(response=response, filters=filters)
 
-@product_router.get('/product/{product_id}', summary="get product details", response_model=commonResponse)
+@product_router.get('/{product_id}', summary="get product details", response_model=commonResponse)
 def get_product_info(response: Response, product_id: int):
     return get_product_details(response=response, product_id=product_id)
