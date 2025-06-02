@@ -26,7 +26,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=USER_ROLES, default='dealer')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     mobile = models.PositiveIntegerField(null=True, blank=True)
-    profile_image = models.ImageField(upload_to='uploads/profile_images/', null=True, blank=True)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

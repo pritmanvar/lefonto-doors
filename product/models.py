@@ -6,7 +6,7 @@ from django_jsonform.models.fields import JSONField, ArrayField
 # Create your models here.
 class DoorCategory(models.Model):
     title = models.CharField(max_length=30, unique=True)
-    category_image = models.ImageField(upload_to='uploads/categories/', null=True, blank=True)
+    category_image = models.ImageField(upload_to='categories/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -60,7 +60,7 @@ class DoorMaterial(models.Model):
 
 class Feature(models.Model):
     feature_name = models.CharField(max_length=30, unique=True)
-    image = models.ImageField(upload_to='uploads/features/', null=True, blank=True)
+    image = models.ImageField(upload_to='features/', null=True, blank=True)
     
     def __str__(self):
         return self.feature_name
@@ -170,7 +170,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100)
     details = models.TextField()
     short_description = models.TextField()
-    main_image = models.ImageField(upload_to='uploads/main_images/', null=True, blank=True)
+    main_image = models.ImageField(upload_to='main_images/', null=True, blank=True)
     ratings = models.FloatField(default=0.0)
     category = models.ForeignKey(DoorCategory, on_delete=models.SET_NULL, null=True, blank=True)
     variants = JSONField(schema=PRODUCT_VARIENTS_SCHEMA, null=True, blank=True)
@@ -188,7 +188,7 @@ class Product(models.Model):
         return self.product_name
 
 class GallarySupporting(models.Model):
-    image = models.ImageField(upload_to='uploads/gallary_supportings/', null=True, blank=True)
+    image = models.ImageField(upload_to='gallary_supportings/', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gallary_user')
     created_at = models.DateTimeField(auto_now_add=True)

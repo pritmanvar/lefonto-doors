@@ -13,24 +13,14 @@ class CustomUserAdmin(UserAdmin):
     
     fieldsets = (
         ('Authentication', {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'role')}),
+        ('Personal Info', {'fields': ('name', 'role', 'mobile', 'profile_image')}),
         ('Address Information', {'fields': ('location',)}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-    
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': (
-                'email', 'name', 'role', 'password1', 'password2',
-                'location',
-                'is_staff', 'is_active'
-            )}
-        ),
-    )
+
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
@@ -39,14 +29,3 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ('country', 'state', 'city', 'pincode', 'landmark')
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
-    
-    fieldsets = (
-        ('Location Information', {
-            'fields': ('country', 'state', 'city', 'pincode', 'landmark')
-        }),
-        ('Metadata', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-
