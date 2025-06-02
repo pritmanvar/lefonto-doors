@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class PriceRange(BaseModel):
     min: float
@@ -11,3 +12,5 @@ class ProductFilters(BaseModel):
     color: list[int] = []
     dimentions: list[int] = []
     price: PriceRange = None
+    short_based_on_ratings: bool = False
+    number_of_products_to_fetch: int = None

@@ -38,10 +38,10 @@ def verify_access_token(jwt_token: str) -> bool:
         decoded_jwt = jwt.decode(
             jwt_token, config.settings.JWT_SECRET_KEY, config.settings.ALGORITHM)
         # print(decoded_jwt)
-        return {'verified': True, 'email': decoded_jwt['sub']}
+        return {'verified': True, 'mobile': decoded_jwt['sub']}
     except (ExpiredSignatureError, Exception, InvalidSignatureError) as e:
         print(e)
-        return {'verified': False, 'email': ''}
+        return {'verified': False, 'mobile': ''}
 
 
 def CommonResponse(Response: int, Error: str, ErrorCode: int, ResponseMessage: str, Message: Any, Value: Any = None):
@@ -143,7 +143,7 @@ async def get_token(
             detail=UnauthorizedMessage().detail,
         )
 
-    return {'token': auth.credentials, 'email': verification['email']}
+    return {'token': auth.credentials, 'mobile': verification['mobile']}
 
 # ******************************************************  Generate OTP ******************************************************
 

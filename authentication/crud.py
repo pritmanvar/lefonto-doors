@@ -21,11 +21,11 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 def verify_credentials(data):
     try:
-        user = User.objects.get(email = data.email)
-        userdata = authenticate(email=user.email, password=data.password)
+        user = User.objects.get(mobile = data.mobile)
+        userdata = authenticate(mobile=user.mobile, password=data.password)
         if userdata is not None:
-            return TokenResponse(access_token=create_access_token(userdata.email), refresh_token=create_refresh_token(userdata.email), Response=200, Error="False", ErrorCode=0, ResponseMessage="Successfully Logged In.", Message="Successfully Logged In.",Value={"email": userdata.email, "name": userdata.name})
-        return TokenResponse(access_token="", refresh_token="", Response=401, Error="True", ErrorCode=0, ResponseMessage="Incorrect email or Password.", Message="Incorrect email or Password.")
+            return TokenResponse(access_token=create_access_token(userdata.mobile), refresh_token=create_refresh_token(userdata.mobile), Response=200, Error="False", ErrorCode=0, ResponseMessage="Successfully Logged In.", Message="Successfully Logged In.",Value={"mobile": userdata.mobile, "name": userdata.name})
+        return TokenResponse(access_token="", refresh_token="", Response=401, Error="True", ErrorCode=0, ResponseMessage="Incorrect mobile or Password.", Message="Incorrect mobile or Password.")
 
     except User.DoesNotExist:
         return TokenResponse(access_token="", refresh_token="", Response=500, Error="True", ErrorCode=0, ResponseMessage="User does not exist.", Message='User does not exist.')
@@ -35,10 +35,10 @@ def verify_credentials(data):
 
 # ****************************************************** Update Profile Image ******************************************************
 
-def update_profile_img(email, data, response):
+def update_profile_img(mobile, data, response):
     try:
         print(data)
-        my_user = User.objects.get(email=email)
+        my_user = User.objects.get(mobile=mobile)
 
         uploaded_file = InMemoryUploadedFile(
             data.file, None, data.filename, None, data.content_type, None
@@ -61,9 +61,9 @@ def update_profile_img(email, data, response):
 
 # ****************************************************** Update Profile ******************************************************
 
-def update_profile(email, data, response):
+def update_profile(mobile, data, response):
     try:
-        my_user = User.objects.get(email=email)
+        my_user = User.objects.get(mobile=mobile)
 
         my_user.name = data.name
         my_user.email = data.email
@@ -72,7 +72,7 @@ def update_profile(email, data, response):
         my_user.save()
         
         response.status_code = status.HTTP_200_OK
-        return TokenResponse(access_token=create_access_token(my_user.email), refresh_token=create_refresh_token(my_user.email), Response=200, Error="False", ErrorCode=0, ResponseMessage="Profile Updated.", Message="Profile Updated.",Value={"email": my_user.email, "name": my_user.name})
+        return TokenResponse(access_token=create_access_token(my_user.mobile), refresh_token=create_refresh_token(my_user.mobile), Response=200, Error="False", ErrorCode=0, ResponseMessage="Profile Updated.", Message="Profile Updated.",Value={"mobile": my_user.mobile, "name": my_user.name})
 
     except User.DoesNotExist:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -85,11 +85,11 @@ def update_profile(email, data, response):
 
 # ****************************************************** Get Profile ******************************************************
 
-def get_profile_details(email, response):
+def get_profile_details(mobile, response):
     try:
-        my_user = User.objects.get(email=email)
+        my_user = User.objects.get(mobile=mobile)
 
-        user_response = {"email": my_user.email,
+        user_response = {"mobile": my_user.mobile,
                          "name": my_user.name,
                          "role": my_user.role,
                          "landmark": my_user.location.landmark if my_user.location else '',
@@ -127,9 +127,9 @@ def get_location_details(response):
 
 # ****************************************************** Add Location ******************************************************
 
-def add_location_details(response, data, email):
+def add_location_details(response, data, mobile):
     try:
-        user = User.objects.get(email=email)
+        user = User.objects.get(mobile=mobile)
         location, created = Location.objects.get_or_create(country=data.country, state=data.state, city=data.city, pincode=data.pincode, landmark=data.landmark)
 
         user.location = location

@@ -8,9 +8,9 @@ from product.models import Product
 
 # ****************************************************** Add Review ******************************************************
 
-def add_review_details(response, data, user_email):
+def add_review_details(response, data, mobile):
     try:
-        user = User.objects.get(email=user_email)
+        user = User.objects.get(mobile=mobile)
         product = Product.objects.get(id=data.product)
         review = CustomerReview.objects.create(user=user, product=product, rating=data.rating, review_text=data.review_text)
         return CommonResponse(200, "True", 200, "Review added successfully.", 'success', Value={'review_id': review.id})

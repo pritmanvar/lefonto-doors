@@ -5,7 +5,7 @@ from .models import CustomerReview
 class CustomerReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'product', 'rating', 'created_at']
     list_filter = ['rating', 'created_at', 'product']
-    search_fields = ['user__email', 'product__product_name', 'review_text']
+    search_fields = ['user__mobile', 'product__product_name', 'review_text']
     readonly_fields = ['created_at']
     raw_id_fields = ['user', 'product']
     

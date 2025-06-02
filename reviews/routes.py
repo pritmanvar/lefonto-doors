@@ -9,4 +9,4 @@ reviews_router = APIRouter()
 
 @reviews_router.post('/', summary="add review", response_model=commonResponse)
 def add_review(response: Response, data: Review, user_details: dict = Depends(get_token)):
-    return add_review_details(response, data, user_details['email'])
+    return add_review_details(response, data, user_details['mobile'])

@@ -92,8 +92,8 @@ def changePasswordDataValidation(data):
 
 def loginDataValidation(data):
     Error = dict()
-    if not validate(data.email).Email():
-        Error = "Incorrect Email Format."
+    if not validate(data.mobile).PhoneNumber():
+        Error = "Incorrect Mobile Format."
         return Error
 
     if not validate(data.password).password():
@@ -251,7 +251,7 @@ def verifyOTPDataValidation(data):
 
 
 
-def UserUpdateDataValidation(email, data):
+def UserUpdateDataValidation(mobile, data):
     Error = dict()
     try:
         if not validate(data.name).length(0, 50):
@@ -264,10 +264,11 @@ def UserUpdateDataValidation(email, data):
         else:
             try:
                 user = User.objects.get(
-                    email=data.email)
+                    mobile=data.mobile)
 
-                if (user.email != email):
-                    Error = "Email Is already In Use."
+                print(user.mobile, mobile, user.mobile == mobile, user.mobile - mobile)
+                if (user.mobile != mobile):
+                    Error = "mobile Is already In Use."
                     return Error
             except:
                 pass

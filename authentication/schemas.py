@@ -12,7 +12,7 @@ class UserUpdate(BaseModel):
         from_attributes = True
 
 class UserLogin(BaseModel):
-    email: str
+    mobile: int
     password: str
 
     class Config:

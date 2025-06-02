@@ -5,7 +5,7 @@ import uuid
 
 
 class Location(models.Model):
-    country = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True, default='India')
     state = models.CharField(max_length=50, null=True, blank=True)
     city = models.CharField(max_length=50, null=True, blank=True)
     pincode = models.CharField(max_length=10, null=True, blank=True)
@@ -22,15 +22,15 @@ class User(AbstractUser):
                           default=uuid.uuid4())
     username = None
     name = models.CharField(max_length=50, null=True, blank=True)
-    email = models.EmailField(max_length=150, unique=True)
+    mobile = models.PositiveIntegerField(unique=True)
+    email = models.EmailField(max_length=150, null=True, blank=True)
     role = models.CharField(max_length=10, choices=USER_ROLES, default='dealer')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
-    mobile = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()

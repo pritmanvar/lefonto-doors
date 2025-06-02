@@ -29,7 +29,14 @@ def get_filters_details(response, filters):
             for dim in dimentions_list:
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         
-        products = Product.objects.filter(filters_data)
+        if filters.short_based_on_ratings:
+            products = Product.objects.filter(filters_data).order_by('-ratings')
+        else:
+            products = Product.objects.filter(filters_data)
+
+        if filters.number_of_products_to_fetch:
+            products = products[:filters.number_of_products_to_fetch]
+
         products_obj = []
         for product in products:
             products_obj.append({

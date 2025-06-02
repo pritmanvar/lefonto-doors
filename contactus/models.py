@@ -7,7 +7,7 @@ class Inquiry(models.Model):
     name = models.CharField(max_length=100)
     mobile = models.PositiveIntegerField()
     message = models.TextField()
-    country = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True, default='India')
     state = models.CharField(max_length=50, null=True, blank=True)
     city = models.CharField(max_length=50, null=True, blank=True)
     pincode = models.CharField(max_length=10, null=True, blank=True)
