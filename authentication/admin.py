@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('country', 'state', 'city', 'pincode', 'landmark', 'created_at')
+    list_display = ('id', 'country', 'state', 'city', 'pincode', 'landmark', 'created_at')
     list_filter = ('country', 'state', 'city')
     search_fields = ('country', 'state', 'city', 'pincode', 'landmark')
     readonly_fields = ('created_at', 'updated_at')

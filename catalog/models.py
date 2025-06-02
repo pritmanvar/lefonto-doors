@@ -1,5 +1,5 @@
 from django.db import models
-
+from authentication.models import Location
 # Create your models here.
 class WhyUsCatalog(models.Model):
     title = models.CharField(max_length=100, blank=True)
@@ -13,6 +13,7 @@ class Catalog(models.Model):
     image = models.ImageField(upload_to='catalog/', null=True, blank=True)
     about = models.TextField(blank=True)
     why_us = models.ManyToManyField(WhyUsCatalog, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(blank=True)
     
     def __str__(self):

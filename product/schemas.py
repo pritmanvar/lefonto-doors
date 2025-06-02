@@ -14,3 +14,4 @@ class ProductFilters(BaseModel):
     price: PriceRange = None
     short_based_on_ratings: bool = False
     number_of_products_to_fetch: int = None
+    location: int = None

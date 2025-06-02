@@ -1,5 +1,5 @@
 from django.db import models
-from authentication.models import User
+from authentication.models import User, Location
 from django_jsonform.models.fields import JSONField, ArrayField
 
 
@@ -179,6 +179,7 @@ class Product(models.Model):
     features = models.ManyToManyField(Feature, blank=True)
     warranty_details = models.TextField(blank=True)
     return_policy = models.TextField(blank=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     recommanded_products = models.ManyToManyField('self', blank=True, symmetrical=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

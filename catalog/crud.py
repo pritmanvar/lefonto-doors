@@ -23,7 +23,15 @@ def get_catalog_details(response):
                 }
                 for why_us in catalog.why_us.all()
             ],
-            'description': catalog.description
+            'description': catalog.description,
+            'location': {
+                'id': catalog.location.id,
+                'country': catalog.location.country,
+                'state': catalog.location.state,
+                'city': catalog.location.city,
+                'pincode': catalog.location.pincode,
+                'landmark': catalog.location.landmark,
+            } if catalog.location else None
         }
         return CommonResponse(200, "True", 200, "Catalog fetched successfully.", 'success', Value=catelog_object)
     except Catalog.DoesNotExist:

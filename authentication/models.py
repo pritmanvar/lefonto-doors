@@ -36,4 +36,4 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return str(self.mobile) + " " + self.name if self.name else str(self.mobile)

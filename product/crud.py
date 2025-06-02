@@ -5,6 +5,7 @@ from fastapi import status
 
 from utils.utils import CommonResponse
 from product.models import DoorCategory, DoorStyle, DoorMaterial, DoorColor, DoorDimension, Product, GallarySupporting
+from reviews.models import CustomerReview
 
 def get_filters_details(response, filters):
     try:
@@ -28,15 +29,17 @@ def get_filters_details(response, filters):
         if filters.dimentions:
             for dim in dimentions_list:
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
-        
+        if filters.location:
+            filters_data = (filters_data) & Q(location=filters.location)
+
         if filters.short_based_on_ratings:
             products = Product.objects.filter(filters_data).order_by('-ratings')
         else:
             products = Product.objects.filter(filters_data)
-
         if filters.number_of_products_to_fetch:
             products = products[:filters.number_of_products_to_fetch]
-
+        
+        print(filters_data)
         products_obj = []
         for product in products:
             products_obj.append({
@@ -47,6 +50,14 @@ def get_filters_details(response, filters):
                 'ratings': product.ratings,
                 'variants': product.variants,
                 'image': product.main_image.url if product.main_image else None,
+                'location': {
+                    'id': product.location.id,
+                    'country': product.location.country,
+                    'state': product.location.state,
+                    'city': product.location.city,
+                    'pincode': product.location.pincode,
+                    'landmark': product.location.landmark
+                } if product.location else None
             })
 
         return CommonResponse(200, "True", 200, "Filters details fetched successfully.", 'success', Value=products_obj)
@@ -99,6 +110,7 @@ def get_product_details(response, product_id: int):
                 })
 
         # Construct the complete product details
+        CustomerReviews = CustomerReview.objects.filter(product=product)
         product_details = {
             'id': product.id,
             'product_name': product.product_name,
@@ -121,10 +133,31 @@ def get_product_details(response, product_id: int):
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
+            'location': {
+                'id': product.location.id,
+                'country': product.location.country,
+                'state': product.location.state,
+                'city': product.location.city,
+                'pincode': product.location.pincode,
+                'landmark': product.location.landmark,
+            },
             'recommended_products': recommended_data,
             'gallery_images': gallery_data,
+            'reviews': [
+                {
+                    'id': review.id,
+                    'user': {
+                        'username': review.user.username,
+                        'profile_image': review.user.profile_image.url if review.user.profile_image else None,
+                        'mobile': review.user.mobile,
+                        'email': review.user.email
+                    },
+                    'rating': review.rating,
+                    'review_text': review.review_text,
+                } for review in CustomerReviews
+            ],
             'created_at': product.created_at,
-            'updated_at': product.updated_at
+            'updated_at': product.updated_at,
         }
 
         return CommonResponse(200, "True", 200, "Product details fetched successfully.", 'success', Value=product_details)
