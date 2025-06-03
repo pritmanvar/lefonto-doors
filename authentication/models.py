@@ -22,7 +22,7 @@ class User(AbstractUser):
                           default=uuid.uuid4())
     username = None
     name = models.CharField(max_length=50, null=True, blank=True)
-    mobile = models.PositiveIntegerField(unique=True)
+    mobile = models.PositiveBigIntegerField(unique=True)
     email = models.EmailField(max_length=150, null=True, blank=True)
     role = models.CharField(max_length=10, choices=USER_ROLES, default='dealer')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)

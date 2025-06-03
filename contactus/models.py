@@ -4,7 +4,7 @@ from authentication.models import User
 # Create your models here.
 class Inquiry(models.Model):
     name = models.CharField(max_length=100)
-    mobile = models.PositiveIntegerField()
+    mobile = models.PositiveBigIntegerField()
     message = models.TextField()
     country = models.CharField(max_length=50, null=True, blank=True, default='India')
     state = models.CharField(max_length=50, null=True, blank=True)
