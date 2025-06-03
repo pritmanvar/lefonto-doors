@@ -12,11 +12,3 @@ class CatalogAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'description']
     search_fields = ['about', 'description']
     filter_horizontal = ['why_us']
-    fieldsets = [
-        ('Main Content', {
-            'fields': ['image', 'about', 'description']
-        }),
-        ('Why Us Section', {
-            'fields': ['why_us']
-        }),
-    ]
