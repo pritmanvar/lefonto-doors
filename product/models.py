@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User, Location
 from django_jsonform.models.fields import JSONField, ArrayField
+from django.utils.safestring import mark_safe
 
 
 # Create your models here.
