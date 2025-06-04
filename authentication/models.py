@@ -18,8 +18,7 @@ class Location(models.Model):
 
 class User(AbstractUser):
     USER_ROLES = (('admin', 'Admin'), ('dealer', 'dealer'),)
-    id = models.CharField(max_length=36, primary_key=True,
-                          default=uuid.uuid4())
+    id = models.CharField(max_length=36, primary_key=True, default=uuid.uuid4)
     username = None
     name = models.CharField(max_length=50, null=True, blank=True)
     mobile = models.PositiveBigIntegerField(unique=True)
