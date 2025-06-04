@@ -13,18 +13,18 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         ('Authentication', {'fields': ('mobile', 'password')}),
-        ('Personal Info', {'fields': ('name', 'role', 'email', 'profile_image')}),
+        ('Personal Info', {'fields': ('name', 'role', 'email', 'profile_image', 'image_tag')}),
         ('Address Information', {'fields': ('location',)}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-
+    readonly_fields = ('last_login', 'date_joined', 'created_at', 'updated_at', 'image_tag')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('mobile', 'password1', 'password2', 'name', 'role', 'email', 'location'),
+            'fields': ('mobile', 'password1', 'password2', 'name', 'role', 'email', 'location', 'image_tag'),
         }),
     )
 

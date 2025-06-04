@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 import uuid
+from django.utils.safestring import mark_safe
 
 
 class Location(models.Model):
@@ -25,9 +26,17 @@ class User(AbstractUser):
     email = models.EmailField(max_length=150, null=True, blank=True)
     role = models.CharField(max_length=10, choices=USER_ROLES, default='dealer')
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    
+    def image_tag(self):
+        if self.profile_image:
+            return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.profile_image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Profile Image'
     
     USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = []

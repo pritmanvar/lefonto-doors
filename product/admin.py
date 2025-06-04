@@ -17,7 +17,7 @@ from .models import (
 class DoorCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'created_at', 'updated_at', 'updated_by')
     search_fields = ('title',)
-    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by', 'image_tag')
 
     def save_model(self, request, obj, form, change):
         obj.updated_by = request.user
@@ -67,12 +67,13 @@ class DoorMaterialAdmin(admin.ModelAdmin):
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ('id', 'feature_name',)
     search_fields = ('feature_name',)
+    readonly_fields = ('image_tag',)
 
 @admin.register(GallarySupporting)
 class GallarySupportingAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'user', 'created_at', 'updated_at', 'updated_by')
     list_filter = ('product', 'user')
-    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by', 'image_tag')
 
     def save_model(self, request, obj, form, change):
         obj.updated_by = request.user
@@ -84,7 +85,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'style', 'features')
     search_fields = ('product_name', 'details', 'short_description')
     filter_horizontal = ('features', 'recommanded_products')
-    readonly_fields = ('created_at', 'updated_at', 'updated_by')
+    readonly_fields = ('created_at', 'updated_at', 'updated_by', 'image_tag')
 
     def save_model(self, request, obj, form, change):
         obj.updated_by = request.user

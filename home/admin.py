@@ -6,6 +6,8 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ['description', 'product_material']
     list_filter = ['product_material']
     search_fields = ['description']
+    
+    readonly_fields = ('image_tag',)
 
 @admin.register(Home)
 class HomeAdmin(admin.ModelAdmin):
@@ -13,3 +15,4 @@ class HomeAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description', 'question', 'answer']
     filter_horizontal = ['categories', 'features']
     
+    readonly_fields = ('image_tag', )

@@ -7,11 +7,19 @@ from django.utils.safestring import mark_safe
 # Create your models here.
 class DoorCategory(models.Model):
     title = models.CharField(max_length=30, unique=True)
-    category_image = models.ImageField(upload_to='categories/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    category_image = models.ImageField(upload_to='categories/', null=True, blank=True)
     
+    def image_tag(self):
+        if self.category_image:
+            return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.category_image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Category Image'
+
     def __str__(self):
         return self.title
 
@@ -63,6 +71,14 @@ class Feature(models.Model):
     feature_name = models.CharField(max_length=30, unique=True)
     image = models.ImageField(upload_to='features/', null=True, blank=True)
     
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
+
     def __str__(self):
         return self.feature_name
 
@@ -171,7 +187,6 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100)
     details = models.TextField()
     short_description = models.TextField()
-    main_image = models.ImageField(upload_to='main_images/', null=True, blank=True)
     ratings = models.FloatField(default=0.0)
     category = models.ForeignKey(DoorCategory, on_delete=models.SET_NULL, null=True, blank=True)
     variants = JSONField(schema=PRODUCT_VARIENTS_SCHEMA, null=True, blank=True)
@@ -185,6 +200,15 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    main_image = models.ImageField(upload_to='main_images/', null=True, blank=True)
+
+    def image_tag(self):
+        if self.main_image:
+            return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.main_image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Main Image'
 
     def __str__(self):
         return self.product_name
@@ -196,6 +220,14 @@ class GallarySupporting(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='gallary_updated_by')
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
 
     def __str__(self):
         return f"Gallary Supporting - {self.product} - {self.user}"
