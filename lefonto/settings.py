@@ -99,15 +99,18 @@ WSGI_APPLICATION = 'lefonto.wsgi.application'
 #     }
 # }
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+# tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
+        'NAME': str(os.getenv("POSTGRES_DB")),
+        'USER': str(os.getenv("USERNAME")),
+        'PASSWORD': str(os.getenv("PASSWORD")),
+        'HOST': str(os.getenv("HOST")),
+        'PORT': int(os.getenv("PORT")),
+        'OPTIONS': {
+            'sslmode': 'require',  # or another sslmode value
+        },
     }
 }
 
