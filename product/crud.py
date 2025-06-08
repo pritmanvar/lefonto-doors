@@ -49,7 +49,7 @@ def get_filters_details(response, filters):
                 'style': product.style.name,
                 'ratings': product.ratings,
                 'variants': product.variants,
-                'image': product.main_image.url if product.main_image else None,
+                'image': f"{os.getenv('BASE_URL')}{product.main_image.url}" if product.main_image else None,
                 'location': [{
                     'id': loc.id,
                     'country': loc.country,
@@ -121,7 +121,7 @@ def get_product_details(response, product_id: int):
             'category': {
                 'id': product.category.id,
                 'title': product.category.title,
-                'image': product.category.category_image.url if product.category.category_image else None
+                'image': f"{os.getenv('BASE_URL')}{product.category.category_image.url}" if product.category.category_image else None
             } if product.category else None,
             'style': {
                 'id': product.style.id,
@@ -148,7 +148,7 @@ def get_product_details(response, product_id: int):
                     'id': review.id,
                     'user': {
                         'username': review.user.username,
-                        'profile_image': review.user.profile_image.url if review.user.profile_image else None,
+                        'profile_image': f"{os.getenv('BASE_URL')}{review.user.profile_image.url}" if review.user.profile_image else None,
                         'mobile': review.user.mobile,
                         'email': review.user.email
                     },

@@ -4,6 +4,8 @@ from utils.utils import CommonResponse
 from about.models import About
 from fastapi import status
 
+import os
+
 # ****************************************************** Get About Details ******************************************************
 
 def get_about_details(response):
@@ -11,17 +13,17 @@ def get_about_details(response):
         about = About.objects.latest('id')
         about_object = {
             'id': about.id,
-            'background_image': about.background_image.url if about.background_image else None,
+            'background_image': f"{os.getenv('BASE_URL')}{about.background_image.url}" if about.background_image else None,
             'title': about.title,
             'title_description': about.title_description,
             'why_us_description': about.why_us_description,
-            'why_us_image': about.why_us_image.url if about.why_us_image else None,
+            'why_us_image': f"{os.getenv('BASE_URL')}{about.why_us_image.url}" if about.why_us_image else None,
             'why_us': [
                 {
                     'id': why_us.id,
                     'title': why_us.title,
                     'description': why_us.description,
-                    'image': why_us.image.url if why_us.image else None
+                    'image': f"{os.getenv('BASE_URL')}{why_us.image.url}" if why_us.image else None
                 } 
                 for why_us in about.why_us.all()
             ],
