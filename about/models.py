@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 class WhyUsAbout(models.Model):
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='why_us_about/', null=True, blank=True)
+    image = models.FileField(upload_to='why_us_about/', null=True, blank=True)
 
     def __str__(self):
         return self.title if self.title else "Why Us Section"
@@ -37,9 +37,9 @@ class About(models.Model):
     email = models.EmailField(blank=True)
     address = models.TextField(blank=True)
     website = models.URLField(blank=True)
-    background_image = models.ImageField(upload_to='about/', null=True, blank=True)
-    why_us_image = models.ImageField(upload_to='about_why_us_bg/', null=True, blank=True)
-    image_2 = models.ImageField(upload_to='about/', null=True, blank=True)
+    background_image = models.FileField(upload_to='about/', null=True, blank=True)
+    why_us_image = models.FileField(upload_to='about_why_us_bg/', null=True, blank=True)
+    image_2 = models.FileField(upload_to='about/', null=True, blank=True)
 
     def background_image_tag(self):
         if self.background_image:

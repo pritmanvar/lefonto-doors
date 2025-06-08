@@ -6,7 +6,7 @@ from product.models import DoorMaterial, DoorCategory, Feature
 class Banner(models.Model):
     description = models.CharField(max_length=255, blank=True)
     product_material = models.ForeignKey(DoorMaterial, on_delete=models.SET_NULL, null=True, blank=True)
-    image = models.ImageField(upload_to='banners/', null=True, blank=True)
+    image = models.FileField(upload_to='banners/', null=True, blank=True)
     
     def image_tag(self):
         if self.image:
@@ -24,7 +24,7 @@ class Home(models.Model):
     answer = models.TextField(blank=True)
     features = models.ManyToManyField(Feature, blank=True)
     banner = models.ManyToManyField(Banner, blank=True)
-    background_image = models.ImageField(upload_to='home/', null=True, blank=True)
+    background_image = models.FileField(upload_to='home/', null=True, blank=True)
 
     def image_tag(self):
         if self.background_image:

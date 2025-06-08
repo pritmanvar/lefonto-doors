@@ -10,7 +10,7 @@ class DoorCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    category_image = models.ImageField(upload_to='categories/', null=True, blank=True)
+    category_image = models.FileField(upload_to='categories/', null=True, blank=True)
     
     def image_tag(self):
         if self.category_image:
@@ -69,7 +69,7 @@ class DoorMaterial(models.Model):
 
 class Feature(models.Model):
     feature_name = models.CharField(max_length=30, unique=True)
-    image = models.ImageField(upload_to='features/', null=True, blank=True)
+    image = models.FileField(upload_to='features/', null=True, blank=True)
     
     def image_tag(self):
         if self.image:
@@ -118,7 +118,7 @@ def get_colors():
         return []
 
 class Image(models.Model):
-    image = models.ImageField(blank=True, upload_to='product/')
+    image = models.FileField(blank=True, upload_to='product/')
 
     def __str__(self):
         return (self.id)
@@ -200,7 +200,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    main_image = models.ImageField(upload_to='main_images/', null=True, blank=True)
+    main_image = models.FileField(upload_to='main_images/', null=True, blank=True)
 
     def image_tag(self):
         if self.main_image:
@@ -214,7 +214,7 @@ class Product(models.Model):
         return self.product_name
 
 class GallarySupporting(models.Model):
-    image = models.ImageField(upload_to='gallary_supportings/', null=True, blank=True)
+    image = models.FileField(upload_to='gallary_supportings/', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gallary_user')
     created_at = models.DateTimeField(auto_now_add=True)
