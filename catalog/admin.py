@@ -13,6 +13,6 @@ class WhyUsCatalogAdmin(admin.ModelAdmin):
 class CatalogAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'description']
     search_fields = ['about', 'description']
-    filter_horizontal = ['why_us']
+    # filter_horizontal = ['why_us']
     
     readonly_fields = ('image_tag',)

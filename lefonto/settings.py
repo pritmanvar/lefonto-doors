@@ -35,6 +35,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 ALLOWED_ORIGINS = ['http://*', 'https://*']
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
+X_FRAME_OPTIONS = 'ALLOWALL'
 
 
 # Application definition

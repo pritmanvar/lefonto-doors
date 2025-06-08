@@ -84,7 +84,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'product_name', 'category', 'style', 'ratings', 'created_at', 'updated_at', 'updated_by')
     list_filter = ('category', 'style', 'features')
     search_fields = ('product_name', 'details', 'short_description')
-    filter_horizontal = ('features', 'recommanded_products')
+    # filter_horizontal = ('features', 'recommanded_products')
     readonly_fields = ('created_at', 'updated_at', 'updated_by', 'image_tag')
 
     def save_model(self, request, obj, form, change):

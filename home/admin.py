@@ -13,6 +13,5 @@ class BannerAdmin(admin.ModelAdmin):
 class HomeAdmin(admin.ModelAdmin):
     list_display = ['title', 'question']
     search_fields = ['title', 'description', 'question', 'answer']
-    filter_horizontal = ['categories', 'features']
     
     readonly_fields = ('image_tag', )

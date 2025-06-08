@@ -30,7 +30,7 @@ def get_filters_details(response, filters):
             for dim in dimentions_list:
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         if filters.location:
-            filters_data = (filters_data) & Q(location=filters.location)
+            filters_data &= Q(location__id=filters.location)
 
         if filters.short_based_on_ratings:
             products = Product.objects.filter(filters_data).order_by('-ratings')
@@ -50,14 +50,14 @@ def get_filters_details(response, filters):
                 'ratings': product.ratings,
                 'variants': product.variants,
                 'image': product.main_image.url if product.main_image else None,
-                'location': {
-                    'id': product.location.id,
-                    'country': product.location.country,
-                    'state': product.location.state,
-                    'city': product.location.city,
-                    'pincode': product.location.pincode,
-                    'landmark': product.location.landmark
-                } if product.location else None
+                'location': [{
+                    'id': loc.id,
+                    'country': loc.country,
+                    'state': loc.state,
+                    'city': loc.city,
+                    'pincode': loc.pincode,
+                    'landmark': loc.landmark
+                } for loc in product.location.all()]
             })
 
         return CommonResponse(200, "True", 200, "Filters details fetched successfully.", 'success', Value=products_obj)
@@ -133,14 +133,14 @@ def get_product_details(response, product_id: int):
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
-            'location': {
-                'id': product.location.id,
-                'country': product.location.country,
-                'state': product.location.state,
-                'city': product.location.city,
-                'pincode': product.location.pincode,
-                'landmark': product.location.landmark,
-            },
+            'location': [{
+                'id': loc.id,
+                'country': loc.country,
+                'state': loc.state,
+                'city': loc.city,
+                'pincode': loc.pincode,
+                'landmark': loc.landmark,
+            } for loc in product.location.all()],
             'recommended_products': recommended_data,
             'gallery_images': gallery_data,
             'reviews': [

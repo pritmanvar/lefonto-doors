@@ -18,7 +18,7 @@ class ExpertiseAdmin(admin.ModelAdmin):
 class AboutAdmin(admin.ModelAdmin):
     list_display = ['title', 'email', 'contact_number', 'website']
     search_fields = ['title', 'title_description', 'description', 'email', 'contact_number']
-    filter_horizontal = ['why_us', 'expertise']
+    # filter_horizontal = ['why_us', 'expertise']
     
     readonly_fields = (
         'background_image_tag',
