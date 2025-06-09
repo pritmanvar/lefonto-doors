@@ -4,6 +4,8 @@ from utils.utils import CommonResponse
 from catalog.models import Catalog
 from fastapi import status
 
+import os
+
 # ****************************************************** Get Catalog Details ******************************************************
 
 def get_catalog_details(response):
@@ -12,14 +14,14 @@ def get_catalog_details(response):
 
         catelog_object = {
             'id': catalog.id,
-            'image': catalog.image.url if catalog.image else None,
+            'image': f"{os.getenv('BASE_URL')}{catalog.image.url}" if catalog.image else None,
             'about': catalog.about,
             'why_us': [
                 {
                     'id': why_us.id,
                     'title': why_us.title,
                     'description': why_us.description,
-                    'image': why_us.image.url if why_us.image else None
+                    'image': f"{os.getenv('BASE_URL')}{why_us.image.url}" if why_us.image else None
                 }
                 for why_us in catalog.why_us.all()
             ],

@@ -46,7 +46,7 @@ def update_profile_img(mobile, data, response):
 
         my_user.profile_image.save(data.filename, uploaded_file, save=True)
 
-        user_response = {'profile_image': my_user.profile_image.url if my_user.profile_image else ''}
+        user_response = {'profile_image': f"{os.getenv('BASE_URL')}{my_user.profile_image.url}" if my_user.profile_image else ''}
         response.status_code = status.HTTP_200_OK
         return UserResponse(user_response, Response=200, Error="False", ErrorCode=0, ResponseMessage="Profile Image Updated.", Message="Profile Image Updated.")
 
@@ -98,7 +98,7 @@ def get_profile_details(mobile, response):
                          "state": my_user.location.state if my_user.location else '',
                          "country": my_user.location.country if my_user.location else '',
                          "mobile": my_user.mobile,
-                         "profile_image": my_user.profile_image.url if my_user.profile_image else '',
+                         "profile_image": f"{os.getenv('BASE_URL')}{my_user.profile_image.url}" if my_user.profile_image else '',
                          }
         
         response.status_code = status.HTTP_200_OK
