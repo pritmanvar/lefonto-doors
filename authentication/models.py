@@ -28,7 +28,7 @@ class User(AbstractUser):
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    profile_image = models.FileField(upload_to='profile_images/', null=True, blank=True)
     
     def image_tag(self):
         if self.profile_image:

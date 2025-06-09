@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 class WhyUsCatalog(models.Model):
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='why_us_catalog/', null=True, blank=True)
+    image = models.FileField(upload_to='why_us_catalog/', null=True, blank=True)
 
     def image_tag(self):
         if self.image:
@@ -24,7 +24,7 @@ class Catalog(models.Model):
     why_us = models.ManyToManyField(WhyUsCatalog, blank=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='catalog/', null=True, blank=True)
+    image = models.FileField(upload_to='catalog/', null=True, blank=True)
 
     def image_tag(self):
         if self.image:
