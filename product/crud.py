@@ -131,7 +131,7 @@ def get_product_details(response, product_id: int):
                 'description': product.style.description
             } if product.style else None,
             'variants': product.variants,
-            'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors],
+            'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.get('colors', [])],
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
