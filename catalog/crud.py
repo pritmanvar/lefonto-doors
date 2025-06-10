@@ -34,7 +34,7 @@ def get_catalog_details(response):
                     f"{os.getenv('BASE_URL')}{cat['image']}" if cat["image"] else None
                 ),
             }
-            for cat in catalog.catalog_details
+            for cat in catalog.get("catalog_details", [])
         ]
         return CommonResponse(
             200,
