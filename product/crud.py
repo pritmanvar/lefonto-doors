@@ -84,7 +84,7 @@ def get_product_details(response, product_id: int):
             features_data.append({
                 'id': feature['id'],
                 'name': feature['feature_name'],
-                'image': feature['image'] if feature['image'] else None
+                'image': f"{os.getenv('BASE_URL')}/uploads/{feature['image']}" if feature['image'] else None
             })
 
         # Prepare recommended products
@@ -98,7 +98,7 @@ def get_product_details(response, product_id: int):
                 'style': rec['style'],
                 'ratings': rec['ratings'],
                 'variants': rec['variants'],
-                'image': rec['main_image'],
+                'image': f"{os.getenv('BASE_URL')}/uploads/{rec['main_image']}" if rec['main_image'] else None,
             })
 
         # Prepare gallery images
@@ -108,17 +108,17 @@ def get_product_details(response, product_id: int):
             if img['image']:
                 gallery_data.append({
                     'id': img['id'],
-                    'image': img['image']
+                    'image': f"{os.getenv('BASE_URL')}/uploads/{img['image']}" if img['image'] else None
                 })
 
         # Construct the complete product details
-        CustomerReviews = CustomerReview.objects.filter(product=product)
+        customer_reviews = CustomerReview.objects.filter(product=product)
         product_details = {
             'id': product.id,
             'product_name': product.product_name,
             'details': product.details,
             'short_description': product.short_description,
-            'main_image': product.main_image.url if product.main_image else None,
+            'main_image': f"{os.getenv('BASE_URL')}{product.main_image.url}" if product.main_image else None,
             'ratings': product.ratings,
             'category': {
                 'id': product.category.id,
@@ -131,7 +131,7 @@ def get_product_details(response, product_id: int):
                 'description': product.style.description
             } if product.style else None,
             'variants': product.variants,
-            'colors': product.colors,
+            'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors],
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
@@ -156,7 +156,7 @@ def get_product_details(response, product_id: int):
                     },
                     'rating': review.rating,
                     'review_text': review.review_text,
-                } for review in CustomerReviews
+                } for review in customer_reviews
             ],
             'created_at': product.created_at,
             'updated_at': product.updated_at,
