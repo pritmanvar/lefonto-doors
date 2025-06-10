@@ -73,6 +73,10 @@ def get_product_details(response, product_id: int):
     try:
         try:
             product = Product.objects.get(id=product_id)
+            
+            if product.colors is None:
+                product.colors = []
+            
         except Product.DoesNotExist:
             response.status_code = status.HTTP_404_NOT_FOUND
             return CommonResponse(404, "True", 0, "Product not found.", 'error')

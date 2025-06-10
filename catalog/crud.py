@@ -16,6 +16,9 @@ def get_catalog_details(response):
         if isinstance(catalog.catalog_details, list):
             catalog.catalog_details.sort(key=lambda x: int(x.get("order", 0)))
 
+        if catalog.catalog_details is None:
+            catalog.catalog_details = []
+        
         response_obj = [
             {
                 **cat,
