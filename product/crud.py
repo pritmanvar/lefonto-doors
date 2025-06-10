@@ -7,6 +7,8 @@ from utils.utils import CommonResponse
 from product.models import DoorCategory, DoorStyle, DoorMaterial, DoorColor, DoorDimension, Product, GallarySupporting
 from reviews.models import CustomerReview
 
+import os
+
 def get_filters_details(response, filters):
     try:
         filters_data = Q()
