@@ -1,10 +1,10 @@
-import os
 import django
 from utils.utils import CommonResponse
 
 from home.models import Home
 from fastapi import status
 
+import os
 # ****************************************************** Get Home Details ******************************************************
 
 def get_home_details(response):
