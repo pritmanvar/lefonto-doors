@@ -14,12 +14,12 @@ def get_home_details(response):
             'id': home.id,
             'title': home.title,
             'description': home.description,
-            'background_image': home.background_image.url if home.background_image else None,
+            'background_image': f"{os.getenv('BASE_URL')}{home.background_image.url}" if home.background_image else None,
             'categories': [
                 {
                     'id': category.id,
                     'title': category.title,
-                    'image': category.category_image.url if category.category_image else None
+                    'image': f"{os.getenv('BASE_URL')}{category.category_image.url}" if category.category_image else None
                 }
                 for category in home.categories.all()
             ],
@@ -29,7 +29,7 @@ def get_home_details(response):
                 {
                     'id': feature.id,
                     'title': feature.feature_name,
-                    'image': feature.image.url if feature.image else None
+                    'image': f"{os.getenv('BASE_URL')}{feature.image.url}" if feature.image else None
                 }
                 for feature in home.features.all()
             ],
@@ -37,7 +37,7 @@ def get_home_details(response):
                 {
                     'id': banner.id,
                     'description': banner.description,
-                    'image': banner.image.url if banner.image else None,
+                    'image': f"{os.getenv('BASE_URL')}{banner.image.url}" if banner.image else None,
                     'product_material': banner.product_material.name if banner.product_material else None
                 }
                 for banner in home.banner.all()
