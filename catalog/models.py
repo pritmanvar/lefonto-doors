@@ -30,50 +30,93 @@ def get_locations():
 
 class Catalog(models.Model):
     def CATALOG_SCHEMA():
-        SCHEMA = {
-            'type': 'array',
-            'items': {
-                'type': 'object',
-                'keys': {
-                    'about': {
-                        'type': 'string',
-                        'default': ''
+        return {
+            "type": "array",
+            "title": "Catalog Sections",
+            "items": {
+                "title": "Section",
+                "anyOf": [  # dynamically choose type
+                    {
+                        "title": "About",
+                        "type": "object",
+                        "properties": {
+                            "type": { "const": "about" },
+                            "about": { "type": "string", "default": "" }
+                        },
+                        "required": ["type"]
                     },
-                    'why_us': {
-                        'type': 'array',
-                        'items': {
-                            'type': 'object',
-                            'keys': {
-                                'title': {
-                                    'type': 'string',
-                                    'default': ''
-                                },
-                                'description': {
-                                    'type': 'string',
-                                    'default': ''
-                                },
-                                'image': {
-                                    'type': 'string',
-                                    'format': 'file-url',
-                                    'handler': '/catalog/json-file-handler'
+                    {
+                        "title": "Why Us",
+                        "type": "object",
+                        "properties": {
+                            "type": { "const": "why_us" },
+                            "why_us": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "file-url",
+                                            "handler": "/catalog/json-file-handler"
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        },
+                        "required": ["type"]
                     },
-                    'location': {
-                        'type': 'string',
-                        'choices': get_locations()
+                    {
+                        "title": "Products List",
+                        "type": "object",
+                        "properties": {
+                            "type": { "const": "products_list" },
+                            "products_list": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "file-url",
+                                            "handler": "/catalog/json-file-handler"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "required": ["type"]
                     },
-                    'description': {
-                        'type': 'string',
-                        'default': ''
+                    {
+                        "title": "Single Product Image",
+                        "type": "object",
+                        "properties": {
+                            "type": { "const": "product" },
+                            "product": {
+                                "type": "string",
+                                "format": "file-url",
+                                "handler": "/catalog/json-file-handler"
+                            }
+                        },
+                        "required": ["type"]
                     },
-                    'image': {
-                        'type': 'string',
-                        'format': 'file-url',
-                        'handler': '/catalog/json-file-handler'
+                    {
+                        "title": "Location Section",
+                        "type": "object",
+                        "properties": {
+                            "type": { "const": "location" },
+                            "location": {
+                                "type": "string",
+                                "enum": get_locations()
+                            }
+                        },
+                        "required": ["type"]
                     }
-                }
+                ]
             }
         }
         return SCHEMA
