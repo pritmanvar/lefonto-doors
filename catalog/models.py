@@ -35,11 +35,6 @@ class Catalog(models.Model):
             'items': {
                 'type': 'object',
                 'keys': {
-                    'order': {
-                        'type': 'integer',
-                        'default': 0,
-                        'required': True
-                    },
                     'about': {
                         'type': 'string',
                         'default': ''
