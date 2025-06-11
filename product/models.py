@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from authentication.models import User, Location
 from django_jsonform.models.fields import JSONField, ArrayField
@@ -207,6 +208,9 @@ class Product(models.Model):
             return mark_safe('<img src="%s" style="width: 70px; height:70px;" />' % self.main_image.url)
         else:
             return 'No Image Found'
+    
+    def get_image_url(self):
+        return f"{os.getenv('BASE_URL')}{self.main_image.url}" if self.main_image else None
 
     image_tag.short_description = 'Main Image'
 

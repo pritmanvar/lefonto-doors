@@ -2,6 +2,7 @@ import django
 from utils.utils import CommonResponse
 
 from catalog.models import Catalog
+from product.models import Product
 from fastapi import status
 
 import os
@@ -19,26 +20,24 @@ def get_catalog_details(response):
         if catalog.catalog_details is None:
             catalog.catalog_details = []
         
-        response_obj = [
-            {
-                **cat,
-                "why_us": [
-                    {
-                        **why,
-                        "image": (
-                            f"{os.getenv('BASE_URL')}{why['image']}"
-                            if why["image"]
-                            else None
-                        ),
-                    }
-                    for why in cat.get("why_us", [])
-                ],
-                "image": (
-                    f"{os.getenv('BASE_URL')}{cat['image']}" if cat["image"] else None
-                ),
-            }
-            for cat in catalog.catalog_details if cat
-        ]
+        response_obj = []
+        
+        for obj in catalog.catalog_details:
+            if "banner_image" in obj:
+                response_obj.append({"banner_image": f"{os.getenv('BASE_URL')}{obj["banner_image"]}"})
+            elif "why_us" in obj:
+                response_obj.append({"why_us": [{**why, "icon": f"{os.getenv('BASE_URL')}{why["icon"]}"} for why in obj["why_us"]]})
+            elif "moto" in obj:
+                response_obj.append({"moto": {**obj["moto"], "logo": f"{os.getenv('BASE_URL')}/uploads/{obj["moto"]["logo"] if "logo" in obj["moto"] else ""}"}})
+            elif "products_list" in obj:
+                product_ids = [int(prod.split(" - ")[1]) for prod in obj["products_list"]]
+                products = Product.objects.filter(id__in=product_ids)
+                response_obj.append({"products_list": [{"id": prod.id, "name": prod.product_name, "image": prod.get_image_url()} for prod in products]})
+            elif "feature_image" in obj:
+                response_obj.append({"feature_image": f"{os.getenv('BASE_URL')}{obj["feature_image"]}"})
+            else:
+                response_obj.append(obj)
+
         return CommonResponse(
             200,
             "True",
