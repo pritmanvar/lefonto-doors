@@ -1,5 +1,5 @@
-from django.urls import path,include
-from product import views
+from django.urls import path
+from catalog import views
 
 
 urlpatterns = [
