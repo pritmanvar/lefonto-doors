@@ -26,7 +26,16 @@ def get_catalog_details(response):
             if "banner_image" in obj:
                 response_obj.append({"banner_image": f"{os.getenv('BASE_URL')}{obj["banner_image"]}"})
             elif "why_us" in obj:
-                response_obj.append({"why_us": [{**why, "icon": f"{os.getenv('BASE_URL')}{why["icon"]}"} for why in obj["why_us"]]})
+                # response_obj.append({"why_us": [{**why, "icon": f"{os.getenv('BASE_URL')}{why["icon"]}"} for why in obj["why_us"]]})
+                response_obj.append({
+                    "why_us": [
+                        {
+                            **why,
+                            "icon": f"{os.getenv('BASE_URL')}{why.get('icon', '')}" #.get for why object will not return an error if icon is not present
+                        }
+                        for why in obj["why_us"]
+                    ]
+                })
             elif "moto" in obj:
                 response_obj.append({"moto": {**obj["moto"], "logo": f"{os.getenv('BASE_URL')}/uploads/{obj["moto"]["logo"] if "logo" in obj["moto"] else ""}"}})
             elif "products_list" in obj:
