@@ -93,27 +93,27 @@ WSGI_APPLICATION = 'lefonto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': str(os.getenv("POSTGRES_DB")),
-        'USER': str(os.getenv("USERNAME")),
-        'PASSWORD': str(os.getenv("PASSWORD")),
-        'HOST': str(os.getenv("HOST")),
-        'PORT': int(os.getenv("PORT")),
-        'OPTIONS': {
-            'sslmode': 'require',  # or another sslmode value
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': str(os.getenv("POSTGRES_DB")),
+#         'USER': str(os.getenv("USERNAME")),
+#         'PASSWORD': str(os.getenv("PASSWORD")),
+#         'HOST': str(os.getenv("HOST")),
+#         'PORT': int(os.getenv("PORT")),
+#         'OPTIONS': {
+#             'sslmode': 'require',  # or another sslmode value
+#         },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
