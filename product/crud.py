@@ -51,7 +51,7 @@ def get_filters_details(response, filters):
                 'style': product.style.name,
                 'ratings': product.ratings,
                 'variants': product.variants,
-                'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color.get('images', [])]} for color in product.colors if color],
+                'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'][0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color.get('images', [])]} for color in product.colors if color],
                 'image': f"{os.getenv('BASE_URL')}{product.main_image.url}" if product.main_image else None,
                 'location': [{
                     'id': loc.id,
@@ -136,7 +136,7 @@ def get_product_details(response, product_id: int):
                 'description': product.style.description
             } if product.style else None,
             'variants': product.variants,
-            'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors if color],
+            'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'][0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors if color],
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
