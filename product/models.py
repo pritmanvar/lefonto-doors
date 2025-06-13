@@ -212,6 +212,15 @@ class Product(models.Model):
     def get_image_url(self):
         return f"{os.getenv('BASE_URL')}{self.main_image.url}" if self.main_image else None
 
+    def get_product_varients(self):
+        return [{**varient, 'material': {'material_name': varient.get('material', '').split(' - ')[0],
+                                              'material_id': varient.get('material', '').split(' - ')[1]},
+                                  'dimensions': {'dimension_id': varient.get('dimensions', '').split(' - ')[1],
+                                                 'height': varient.get('dimensions', '').split(' - ')[0].split('x')[0],
+                                                 'width': varient.get('dimensions', '').split(' - ')[0].split('x')[1],
+                                                 'thickness': varient.get('dimensions', '').split(' - ')[0].split('x')[2],
+                                                 }
+                } for varient in self.variants]
     image_tag.short_description = 'Main Image'
 
     def __str__(self):

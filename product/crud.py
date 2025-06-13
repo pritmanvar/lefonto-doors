@@ -10,7 +10,7 @@ from reviews.models import CustomerReview
 import os
 
 def get_filters_details(response, filters):
-    try:
+    # try:
         filters_data = Q()
         materials_list = list(DoorMaterial.objects.filter(id__in=filters.material).values('id', 'name'))
         colors_list = list(DoorColor.objects.filter(id__in=filters.color).values('id', 'name'))
@@ -50,8 +50,8 @@ def get_filters_details(response, filters):
                 'category': product.category.title,
                 'style': product.style.name,
                 'ratings': product.ratings,
-                'variants': product.variants,
-                'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'].split(' -- ')[0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color.get('images', [])]} for color in product.colors if color],
+                'variants': product.get_product_varients(),
+                'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'].split(' -- ')[0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color.get('images', [])]} for color in product.colors if (color and len(color['color'].split(' -- ')) == 3)],
                 'image': f"{os.getenv('BASE_URL')}{product.main_image.url}" if product.main_image else None,
                 'location': [{
                     'id': loc.id,
@@ -65,10 +65,10 @@ def get_filters_details(response, filters):
 
         return CommonResponse(200, "True", 200, "Filters details fetched successfully.", 'success', Value=products_obj)
     
-    except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
-        print(error)
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
+    # except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
+    #     print(error)
+    #     response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    #     return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
 
 def get_product_details(response, product_id: int):
     try:
@@ -135,8 +135,8 @@ def get_product_details(response, product_id: int):
                 'name': product.style.name,
                 'description': product.style.description
             } if product.style else None,
-            'variants': product.variants,
-            'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'].split(' -- ')[0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors if color],
+            'variants': product.get_product_varients(),
+            'colors': [{'color_id': color['color'][1], 'color_code': color['color'].split(' -- ')[2], 'color_name': color['color'].split(' -- ')[0], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color['images']]} for color in product.colors if (color and len(color['color'].split(' -- ')) == 3)],
             'features': features_data,
             'warranty_details': product.warranty_details,
             'return_policy': product.return_policy,
