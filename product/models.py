@@ -112,7 +112,7 @@ def get_colors():
     try:
         colors_objs = DoorColor.objects.all()
         for color in colors_objs:
-            colors.append(f"{color.name} - {color.id}")
+            colors.append(f"{color.name} -- {color.id} -- {color.color_code}")
         return colors
     except Exception as e:
         print(e)
