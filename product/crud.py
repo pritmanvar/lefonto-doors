@@ -51,6 +51,7 @@ def get_filters_details(response, filters):
                 'style': product.style.name,
                 'ratings': product.ratings,
                 'variants': product.variants,
+                'colors': [{'color': color['color'], 'images': [f"{os.getenv('BASE_URL')}{img}" for img in color.get('images', [])]} for color in product.colors if color],
                 'image': f"{os.getenv('BASE_URL')}{product.main_image.url}" if product.main_image else None,
                 'location': [{
                     'id': loc.id,
