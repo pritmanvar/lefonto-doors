@@ -189,6 +189,7 @@ class Product(models.Model):
     details = models.TextField()
     short_description = models.TextField()
     ratings = models.FloatField(default=0.0)
+    weight = models.FloatField(default=0.0, help_text="Weights is in the kg.")
     category = models.ForeignKey(DoorCategory, on_delete=models.SET_NULL, null=True, blank=True)
     variants = JSONField(schema=PRODUCT_VARIENTS_SCHEMA, null=True, blank=True)
     colors = JSONField(schema=COLOR_SCHEMA, null=True, blank=True)
