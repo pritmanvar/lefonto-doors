@@ -6,10 +6,11 @@ from fastapi import status
 from utils.utils import CommonResponse
 from product.models import DoorCategory, DoorStyle, DoorMaterial, DoorColor, DoorDimension, Product, GallarySupporting
 from reviews.models import CustomerReview
+from authentication.models import Location
 
 import os
 
-def get_filters_details(response, filters):
+def get_filtered_products_details(response, filters):
     # try:
         filters_data = Q()
         materials_list = list(DoorMaterial.objects.filter(id__in=filters.material).values('id', 'name'))
@@ -176,3 +177,17 @@ def get_product_details(response, product_id: int):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
 
+def get_filters_details(response):
+    try:
+        categories = list(DoorCategory.objects.all().values('id', 'title', 'category_image'))
+        styles = list(DoorStyle.objects.all().values('id', 'name', 'description'))
+        materials = list(DoorMaterial.objects.all().values('id', 'name'))
+        colors = list(DoorColor.objects.all().values('id', 'name', 'color_code'))
+        dimensions = list(DoorDimension.objects.all().values('id', 'height', 'width', 'thickness', 'height_measure', 'width_measure', 'thickness_measure'))
+        locations = list(Location.objects.all().values('id', 'country', 'state', 'city', 'pincode', 'landmark'))
+        return CommonResponse(200, "True", 200, "Filters Fetched Successfully.", 'success', Value={'categories': categories, 'styles': styles, 'materials': materials, 'colors': colors, 'dimensions': dimensions, 'locations': locations})
+
+    except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
+        print(error)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
