@@ -1,6 +1,6 @@
 import django
 from django.db.models import Q
-from django.db import InterfaceError, Error, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError
+from django.db import InterfaceError, Error, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError, connection
 from fastapi import status
 
 from utils.utils import CommonResponse
@@ -34,8 +34,7 @@ def get_filtered_products_details(response, filters):
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         if filters.location:
             filters_data &= Q(location__id=filters.location)
-        if filters.price and not (filters.price.min == 0 and filters.price.max == 0):
-            filters_data &= Q(variants__contains=[{"price__gte": filters.price.min}]) & Q(variants__contains=[{"price__lte": filters.price.max}])
+        
         if filters.short_based_on_ratings:
             products = Product.objects.filter(filters_data).order_by('-ratings')
         else:
@@ -43,7 +42,28 @@ def get_filtered_products_details(response, filters):
         if filters.number_of_products_to_fetch:
             products = products[:filters.number_of_products_to_fetch]
         
-        print(filters_data)
+        if filters.price and (filters.price.min or filters.price.max):
+            filtered_products = []
+            for product in products:
+                if product.variants:
+                    price_match = False
+                    for variant in product.variants:
+                        variant_price = variant.get('price', 0)
+                        price_valid = True
+                        price_valid &= variant_price >= filters.price.min
+                        price_valid &= variant_price <= filters.price.max
+                        
+                        if price_valid:
+                            price_match = True
+                            break
+                    
+                    if price_match:
+                        filtered_products.append(product)
+            
+            products = filtered_products
+        else:
+            products = list(products)
+
         products_obj = []
         for product in products:
             products_obj.append({
