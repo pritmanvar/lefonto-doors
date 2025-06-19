@@ -34,8 +34,8 @@ def get_filtered_products_details(response, filters):
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         if filters.location:
             filters_data &= Q(location__id=filters.location)
-        if filters.price and len(filters.price) == 2 and not (filters.price[0] == 0 and filters.price[1] == 0):
-            filters_data &= Q(variants__contains=[{"price__gte": filters.price[0]}]) & Q(variants__contains=[{"price__lte": filters.price[1]}])
+        if filters.price and not (filters.price.min == 0 and filters.price.max == 0):
+            filters_data &= Q(variants__contains=[{"price__gte": filters.price.min}]) & Q(variants__contains=[{"price__lte": filters.price.max}])
         if filters.short_based_on_ratings:
             products = Product.objects.filter(filters_data).order_by('-ratings')
         else:
