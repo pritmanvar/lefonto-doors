@@ -11,7 +11,7 @@ from authentication.models import Location
 import os
 
 def get_filtered_products_details(response, filters):
-    # try:
+    try:
         filters_data = Q()
         materials_list = list(DoorMaterial.objects.filter(id__in=filters.material).values('id', 'name'))
         colors_list = list(DoorColor.objects.filter(id__in=filters.color).values('id', 'name'))
@@ -34,7 +34,9 @@ def get_filtered_products_details(response, filters):
                 filters_data |= Q(variants__contains=[{"dimensions": f"{dim['height']}{dim['height_measure']}x{dim['width']}{dim['width_measure']}x{dim['thickness']}{dim['thickness_measure']} - {dim['id']}"}])
         if filters.location:
             filters_data &= Q(location__id=filters.location)
-
+        if filters.price and len(filters.price) == 1 and not (filters.price[0] == 0 and filters.price[1] == 0):
+            filters_data &= Q(price__gte=filters.price[0])
+            filters_data &= Q(price__lte=filters.price[1])
         if filters.short_based_on_ratings:
             products = Product.objects.filter(filters_data).order_by('-ratings')
         else:
@@ -67,10 +69,10 @@ def get_filtered_products_details(response, filters):
 
         return CommonResponse(200, "True", 200, "Filters details fetched successfully.", 'success', Value=products_obj)
     
-    # except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
-    #     print(error)
-    #     response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-    #     return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
+    except (InterfaceError, Error, Exception, DatabaseError, DataError, OperationalError, IntegrityError, InternalError, ProgrammingError, NotSupportedError) as error:
+        print(error)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return CommonResponse(500, "True", 0, "Something went wrong, Please try again.", Message=("{}").format(error))
 
 def get_product_details(response, product_id: int):
     try:
